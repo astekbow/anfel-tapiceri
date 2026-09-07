@@ -9,7 +9,10 @@ export const inquirySchema = z.object({
 export type InquiryInput = z.infer<typeof inquirySchema>;
 
 export const productImageSchema = z.object({
-  url: z.string().min(1).startsWith("/", "URL e pavlefshme"),
+  url: z
+    .string()
+    .min(1)
+    .refine((v) => v.startsWith("/") || v.startsWith("https://"), "URL e pavlefshme"),
   thumbUrl: z.string().optional().nullable(),
   alt: z.string().max(200).default(""),
 });
