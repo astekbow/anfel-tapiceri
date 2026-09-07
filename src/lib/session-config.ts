@@ -5,18 +5,34 @@ export interface SessionData {
   email?: string;
 }
 
-const secret = process.env.SESSION_SECRET;
+/**
+ * Kthen konfigurimin e sesionit. Verifikimi bëhet këtu (jo në import),
+ * që mungesa e SESSION_SECRET të mos rrëzojë build-in apo faqet publike —
+ * gabimi shfaqet vetëm kur përdoret vërtet sesioni (rrugët /admin).
+ */
+export function getSessionOptions(): SessionOptions {
+  const secret = process.env.SESSION_SECRET;
 
-if (!secret && process.env.NODE_ENV === "production") {
-  throw new Error("SESSION_SECRET mungon në .env — vendosni një sekret me të paktën 32 karaktere.");
+  if (!secret || secret.length < 32) {
+    if (process.env.NODE_ENV === "production") {
+      throw new Error(
+        "SESSION_SECRET mungon ose ka më pak se 32 karaktere — vendoseni te variablat e mjedisit (.env ose panelin e hosting-ut)."
+      );
+    }
+    return {
+      password: "sekret-vetem-per-zhvillim-mos-e-perdor-ne-prodhim",
+      cookieName: "anfel_admin",
+      cookieOptions: { secure: false, httpOnly: true, sameSite: "lax" },
+    };
+  }
+
+  return {
+    password: secret,
+    cookieName: "anfel_admin",
+    cookieOptions: {
+      secure: process.env.NODE_ENV === "production",
+      httpOnly: true,
+      sameSite: "lax",
+    },
+  };
 }
-
-export const sessionOptions: SessionOptions = {
-  password: secret ?? "sekret-vetem-per-zhvillim-mos-e-perdor-ne-prodhim",
-  cookieName: "anfel_admin",
-  cookieOptions: {
-    secure: process.env.NODE_ENV === "production",
-    httpOnly: true,
-    sameSite: "lax",
-  },
-};

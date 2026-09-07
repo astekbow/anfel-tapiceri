@@ -149,6 +149,37 @@ npm run build
 pm2 restart anfel
 ```
 
+### Deploy në Vercel (alternativë)
+
+Vercel **nuk ka disk të përhershëm**, prandaj SQLite dhe fotot lokale nuk mjaftojnë aty —
+duhen dy shërbime (të dyja me plan falas): një databazë **Postgres** dhe **Vercel Blob**
+për fotot e reja. Kodi është i përgatitur tashmë; hapat:
+
+1. **Databaza**: krijoni një Postgres falas te [neon.tech](https://neon.tech) (ose
+   Vercel → Storage → Postgres) dhe kopjoni `DATABASE_URL`-në.
+2. **Lokal, një herë**: te `prisma/schema.prisma` ndryshoni `provider = "sqlite"` →
+   `provider = "postgresql"`; fshini folderin `prisma/migrations`; vendosni `DATABASE_URL`-në
+   e re te `.env`; pastaj:
+
+   ```bash
+   npx prisma migrate dev --name init
+   npm run db:seed
+   ```
+
+   Kjo e mbush databazën e cloud-it me përmbajtjen nga kompjuteri juaj.
+3. **Fotot e reja**: në projektin Vercel → Storage → krijoni një **Blob store**;
+   `BLOB_READ_WRITE_TOKEN` shtohet vetë te variablat. Kodi e njeh automatikisht dhe i
+   ruan aty fotot që ngarkon admini.
+4. **Variablat** (Vercel → Settings → Environment Variables): `DATABASE_URL`,
+   `SESSION_SECRET` (i ri, min. 32 karaktere), `ADMIN_EMAIL`, `ADMIN_PASSWORD`,
+   `NEXT_PUBLIC_SITE_URL` (p.sh. `https://anfel-tapiceri.vercel.app`).
+5. **Fotot ekzistuese**: folderi `uploads/` tani COMMIT-ohet në git (nuk injorohet më)
+   dhe futet automatikisht në deploy — sigurohuni që e keni bërë commit para push-it.
+
+Pa këto dy shërbime, faqja në Vercel hapet por s'ka të dhëna (databaza `file:./dev.db`
+nuk ekziston në serverat e tyre). **Rruga më e thjeshtë mbetet VPS-ja e mësipërme** (ose
+Railway/Render me disk), ku gjithçka punon pa asnjë shërbim shtesë.
+
 ## 8. Kalimi në PostgreSQL më vonë (opsionale)
 
 Kodi është i strukturuar që databaza të ndërrohet lehtë:

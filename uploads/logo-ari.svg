@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 100">
+  <g transform="translate(2,6) scale(0.183)">
+    <g fill="none" stroke="#C9A177" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M40 408 H440"/>
+      <path d="M118 408 V160"/>
+      <path d="M96 190 L322 42"/>
+      <path d="M168 42 L394 190"/>
+      <path d="M342 408 V112"/>
+      <path d="M374 408 V142"/>
+      <path d="M118 258 H342"/>
+      <path d="M230 258 V300"/>
+      <path d="M204 336 Q204 304 230 304 Q256 304 256 336 Z"/>
+      <circle cx="230" cy="348" r="7"/>
+      <path d="M160 404 V354 Q160 336 185 336 Q210 336 210 354 V404"/>
+      <path d="M152 404 Q144 376 162 372"/>
+      <path d="M218 404 Q226 376 208 372"/>
+      <path d="M162 374 H208"/>
+    </g>
+    <g fill="#E8A33D">
+      <rect x="196" y="150" width="30" height="30"/>
+      <rect x="234" y="150" width="30" height="30"/>
+      <rect x="196" y="188" width="30" height="30"/>
+      <rect x="234" y="188" width="30" height="30"/>
+    </g>
+    <path d="M252 408 V390 H270 V372 H288 V354 H306 V336 H324 V318 H342 V408 Z" fill="#C9A177"/>
+  </g>
+  <text x="106" y="52" font-family="Georgia, 'Times New Roman', serif" font-size="42" letter-spacing="9" fill="#E5D5BC">ANFEL</text>
+  <text x="108" y="79" font-family="Georgia, 'Times New Roman', serif" font-size="12.5" letter-spacing="3.2" fill="#C9A177">FURNITURE AND DESIGN</text>
+</svg>
