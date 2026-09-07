@@ -51,6 +51,13 @@ async function supabasePut(name: string, buffer: Buffer): Promise<string> {
  * Optimizon dhe ruan një imazh: max ~1920px, WebP, plus thumbnail.
  */
 export async function saveUpload(buffer: Buffer): Promise<SavedUpload> {
+  // Në hosting serverless (Vercel) disku është vetëm-lexim - duhet një storage në cloud
+  if (process.env.VERCEL && !SUPABASE_ENABLED && !BLOB_ENABLED) {
+    throw new Error(
+      "Serveri s'ka ku t'i ruajë fotot: shtoni SUPABASE_URL dhe SUPABASE_SERVICE_ROLE_KEY te Vercel → Settings → Environment Variables dhe bëni Redeploy."
+    );
+  }
+
   const id = crypto.randomBytes(9).toString("hex");
   const mainName = `${id}.webp`;
   const thumbName = `${id}-thumb.webp`;

@@ -41,9 +41,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ files: saved });
   } catch (err) {
     console.error("upload:", err);
-    return NextResponse.json(
-      { error: "Ngarkimi dështoi. Provoni përsëri." },
-      { status: 500 }
-    );
+    const message =
+      err instanceof Error && err.message
+        ? `Ngarkimi dështoi: ${err.message}`
+        : "Ngarkimi dështoi. Provoni përsëri.";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
