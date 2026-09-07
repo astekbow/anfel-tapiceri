@@ -1,0 +1,94 @@
+@import "tailwindcss";
+
+@theme {
+  --color-linen: #f6f2ea;
+  --color-ivory: #fffdf8;
+  --color-pine: #274036;
+  --color-pine-deep: #1c312a;
+  --color-camel: #b4885a;
+  --color-camel-soft: #d8bd9a;
+  --color-walnut: #26201a;
+  --color-mink: #6e6257;
+  --color-seam: #e7dfd0;
+
+  --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-manrope), system-ui, -apple-system, sans-serif;
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-linen);
+  /* teksturë shumë e lehtë thurjeje, si pëlhurë liri */
+  background-image: repeating-linear-gradient(
+      0deg,
+      rgba(38, 32, 26, 0.015) 0 1px,
+      transparent 1px 7px
+    ),
+    repeating-linear-gradient(90deg, rgba(38, 32, 26, 0.015) 0 1px, transparent 1px 7px);
+  color: var(--color-walnut);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background-color: var(--color-pine);
+  color: var(--color-ivory);
+}
+
+summary {
+  list-style: none;
+}
+summary::-webkit-details-marker {
+  display: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-camel);
+  outline-offset: 2px;
+}
+
+/* Vija e qepjes — elementi nënshkrim i faqes */
+.stitch {
+  height: 2px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--color-camel) 0 9px,
+    transparent 9px 16px
+  );
+  border: none;
+}
+
+.stitch-light {
+  height: 2px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(246, 242, 234, 0.55) 0 9px,
+    transparent 9px 16px
+  );
+  border: none;
+}
+
+/* Tekst i gjatë me paragrafë */
+.prose-anfel p {
+  margin-bottom: 1em;
+  line-height: 1.75;
+}
+.prose-anfel p:last-child {
+  margin-bottom: 0;
+}
+
+/* Fshih shiritin e scroll-it në listat horizontale, pa hequr scroll-in */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
