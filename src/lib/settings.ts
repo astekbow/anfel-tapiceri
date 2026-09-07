@@ -39,6 +39,8 @@ export const defaultSettings: Record<string, string> = {
   "hero.cta1": "Shiko produktet",
   "hero.cta2": "Kërko një ofertë",
   "hero.image": "/uploads/hero.webp",
+  "consult.label": "Rezervo konsultë falas",
+  "consult.message": "Përshëndetje! Dua të rezervoj një konsultë falas për një porosi.",
 
   "home.categories.title": "Çfarë punojmë",
   "home.categories.text":
@@ -154,8 +156,17 @@ export const textSections: SettingsSection[] = [
     fields: [
       { key: "hero.title", label: "Titulli kryesor", type: "text" },
       { key: "hero.subtitle", label: "Nëntitulli", type: "textarea" },
-      { key: "hero.cta1", label: "Butoni i parë", type: "text" },
-      { key: "hero.cta2", label: "Butoni i dytë", type: "text" },
+      {
+        key: "consult.label",
+        label: "Butoni i konsultës (hap WhatsApp)",
+        type: "text",
+      },
+      {
+        key: "consult.message",
+        label: "Mesazhi i parapërgatitur në WhatsApp",
+        type: "textarea",
+      },
+      { key: "hero.cta1", label: "Butoni i dytë (çon te produktet)", type: "text" },
       { key: "hero.image", label: "Fotoja e madhe", type: "image" },
     ],
   },
@@ -212,7 +223,6 @@ export const textSections: SettingsSection[] = [
       { key: "products.askLabel", label: "Butoni \"Pyet për këtë produkt\"", type: "text" },
       { key: "products.priceOnRequest", label: "Etiketa kur s'ka çmim fiks", type: "text" },
       { key: "products.relatedTitle", label: "Titulli \"Produkte të ngjashme\"", type: "text" },
-      { key: "products.formTitle", label: "Titulli i formës së mesazhit", type: "text" },
     ],
   },
   {

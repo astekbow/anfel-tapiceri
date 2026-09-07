@@ -8,7 +8,6 @@ import { formatPrice, siteUrl } from "@/lib/format";
 import { whatsappHref } from "@/lib/whatsapp";
 import ProductGallery from "@/components/public/ProductGallery";
 import ProductCard from "@/components/public/ProductCard";
-import ContactForm from "@/components/public/ContactForm";
 
 export const dynamic = "force-dynamic";
 
@@ -139,17 +138,17 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             </a>
           )}
 
-          <details className="group mt-4 rounded-2xl border border-seam bg-ivory">
-            <summary className="cursor-pointer select-none px-5 py-4 font-display text-lg text-pine [&::-webkit-details-marker]:hidden">
-              {s["products.formTitle"]}
-            </summary>
-            <div className="border-t border-seam px-5 py-5">
-              <ContactForm
-                productId={product.id}
-                defaultMessage={`Përshëndetje, kam interes për "${product.title}".`}
-              />
-            </div>
-          </details>
+          {s["contact.phone"] && (
+            <a
+              href={`tel:${s["contact.phone"].replace(/\s/g, "")}`}
+              className="mt-3 flex w-full items-center justify-center gap-2.5 rounded-full border border-seam bg-ivory px-6 py-3.5 text-[15px] font-semibold text-walnut transition-colors hover:border-camel"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-camel">
+                <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2" />
+              </svg>
+              {s["contact.phone"]}
+            </a>
+          )}
         </div>
       </div>
 

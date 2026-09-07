@@ -66,17 +66,28 @@ export default async function HomePage() {
             <div className="stitch-light mt-6 w-20" />
             <p className="mt-6 text-lg leading-relaxed text-linen/85">{s["hero.subtitle"]}</p>
             <div className="mt-9 flex flex-wrap gap-3">
+              {whatsappPhone ? (
+                <a
+                  href={whatsappHref(whatsappPhone, s["consult.message"])}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full bg-camel px-7 py-3.5 text-[15px] font-semibold text-walnut transition-colors hover:bg-camel-soft"
+                >
+                  {s["consult.label"]}
+                </a>
+              ) : (
+                <Link
+                  href="/kontakt"
+                  className="rounded-full bg-camel px-7 py-3.5 text-[15px] font-semibold text-walnut transition-colors hover:bg-camel-soft"
+                >
+                  {s["consult.label"]}
+                </Link>
+              )}
               <Link
                 href="/produktet"
-                className="rounded-full bg-camel px-7 py-3.5 text-[15px] font-semibold text-walnut transition-colors hover:bg-camel-soft"
-              >
-                {s["hero.cta1"]}
-              </Link>
-              <Link
-                href="/kontakt"
                 className="rounded-full border border-linen/50 px-7 py-3.5 text-[15px] font-semibold text-linen transition-colors hover:bg-linen/10"
               >
-                {s["hero.cta2"]}
+                {s["hero.cta1"]}
               </Link>
             </div>
             {trust.length > 0 && (
@@ -252,12 +263,12 @@ export default async function HomePage() {
           <div className="relative mt-8 flex flex-wrap justify-center gap-3">
             {whatsappPhone && (
               <a
-                href={whatsappHref(whatsappPhone, "Përshëndetje! Kam një pyetje për një porosi.")}
+                href={whatsappHref(whatsappPhone, s["consult.message"])}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="rounded-full bg-[#25D366] px-7 py-3.5 text-[15px] font-semibold text-white transition-opacity hover:opacity-90"
               >
-                WhatsApp
+                {s["consult.label"]}
               </a>
             )}
             <Link
