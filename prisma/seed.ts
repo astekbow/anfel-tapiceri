@@ -164,7 +164,7 @@ const products: SeedProduct[] = [
     materials: "Stof liri anti-njollë, sfungjer me densitet të lartë, strukturë ahu",
     featured: true,
     palette: "pine",
-    imageCount: 3,
+    imageCount: 1,
     description:
       "Divan tre-vendësh me linja të pastra dhe krahë të ngushtë, i ndërtuar mbi strukturë ahu të stazhionuar.\n\nSfungjeri me densitet të lartë e mban formën edhe pas viteve me përdorim, ndërsa stofi prej liri pastrohet lehtë dhe merr frymë në verë. Qepjet e dyfishta përgjatë jastëkëve i japin atë pamjen e punës së dorës që nuk e gjeni në mobilje fabrike.\n\nPorositet në çdo ngjyrë dhe përmasë — na sillni masat e sallonit dhe ne ju këshillojmë modelin.",
   },
@@ -178,7 +178,7 @@ const products: SeedProduct[] = [
     materials: "Stof sipas zgjedhjes, sfungjer + pupël, strukturë ahu",
     featured: true,
     palette: "walnut",
-    imageCount: 2,
+    imageCount: 1,
     description:
       "Divan këndor i punuar tërësisht me porosi, i menduar për t'u përshtatur milimetër pas milimetri me hapësirën tuaj.\n\nVjen me shezlong majtas ose djathtas, mbushje që kombinon sfungjer dhe pupël për një ndenjëse të butë që rikthehet në formë, dhe qepje të forta në çdo kënd. Sillni planimetrinë ose një foto të dhomës — ne bëjmë pjesën tjetër.",
   },
@@ -192,7 +192,7 @@ const products: SeedProduct[] = [
     materials: "Kadife e trashë, këmbë arre masive",
     featured: true,
     palette: "clay",
-    imageCount: 2,
+    imageCount: 1,
     description:
       "Kolltuk me shpinore të lartë dhe ndenjëse të thellë, i veshur me kadife që e kap dritën bukur në çdo orë të ditës.\n\nKëmbët prej arre masive i japin një qëndrim klasik që nuk vjetrohet. I përshtatshëm për një cep leximi ose si palë pranë divanit.",
   },
@@ -220,7 +220,7 @@ const products: SeedProduct[] = [
     materials: "Stof kadife e lehtë, dru ahu i lyer",
     featured: false,
     palette: "sage",
-    imageCount: 2,
+    imageCount: 1,
     description:
       "Karrige ngrënieje me shpinore të veshur dhe ndenjëse të butë, e ndërtuar mbi skelet ahu të fortë.\n\nPorositet në setin dhe ngjyrën që dëshironi — për tavolinën e shtëpisë ose për një lokal. Me porosi mbi 6 copë ofrojmë çmim të veçantë.",
   },
@@ -248,7 +248,7 @@ const products: SeedProduct[] = [
     materials: "Stof bukle, dru pishe dhe MDF",
     featured: true,
     palette: "walnut",
-    imageCount: 2,
+    imageCount: 1,
     description:
       "Krevat me kokë të lartë të veshur me stof bukle, që e kthen murin e dhomës së gjumit në sfondin më të butë të shtëpisë.\n\nKoka është e kapitonuar me dorë, me thellime të njëtrajtshme që mbahen në vite. Struktura mban çdo dyshek standard 160 × 200 cm; me porosi bëhet edhe në përmasa të tjera.",
   },
@@ -304,7 +304,7 @@ const products: SeedProduct[] = [
     materials: "Dru i stazhionuar, stof sipas zgjedhjes",
     featured: true,
     palette: "linen",
-    imageCount: 2,
+    imageCount: 1,
     description:
       "Kënd dite, minderë dhome ose ndenjëse dritareje — e ndërtojmë nga zero sipas skicës ose fotos që na sillni.\n\nReparti ynë i marangozisë përgatit strukturën me masë, ndërsa tapiceria e vesh me stofin dhe trashësinë e mbushjes që zgjidhni ju. Ideale për hapësira jo standarde ku mobiljet e gatshme nuk hyjnë.",
   },
@@ -318,7 +318,7 @@ const products: SeedProduct[] = [
     materials: "Stof i ri sipas zgjedhjes, sfungjer dhe susta të reja sipas nevojës",
     featured: false,
     palette: "sage",
-    imageCount: 2,
+    imageCount: 1,
     description:
       "Divani juaj i vjetër ka strukturë të mirë? Atëherë nuk ka nevojë të ndërrohet — vishet nga e para.\n\nE marrim në punishte, ndërrojmë stofin, sfungjerin dhe sustat e lodhura, forcojmë skeletin ku duhet, dhe jua kthejmë si të ri — shpesh me gjysmën e kostos së një divani të ri. Na dërgoni një foto në WhatsApp dhe ju kthejmë një vlerësim pa detyrim.",
   },

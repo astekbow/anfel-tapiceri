@@ -155,8 +155,10 @@ Vercel **nuk ka disk të përhershëm**, prandaj SQLite dhe fotot lokale nuk mja
 duhen dy shërbime (të dyja me plan falas): një databazë **Postgres** dhe **Vercel Blob**
 për fotot e reja. Kodi është i përgatitur tashmë; hapat:
 
-1. **Databaza**: krijoni një Postgres falas te [neon.tech](https://neon.tech) (ose
-   Vercel → Storage → Postgres) dhe kopjoni `DATABASE_URL`-në.
+1. **Databaza**: krijoni një Postgres falas te [supabase.com](https://supabase.com) (ose
+   neon.tech / Vercel Postgres). Te Supabase: butoni **Connect** lart → tab-i **ORMs** →
+   kopjoni të dyja: `DATABASE_URL` (porta 6543, pooler) dhe `DIRECT_URL` (porta 5432),
+   duke zëvendësuar `[YOUR-PASSWORD]` me fjalëkalimin e databazës.
 2. **Lokal, një herë**: te `prisma/schema.prisma` ndryshoni `provider = "sqlite"` →
    `provider = "postgresql"`; fshini folderin `prisma/migrations`; vendosni `DATABASE_URL`-në
    e re te `.env`; pastaj:
