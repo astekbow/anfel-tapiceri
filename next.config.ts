@@ -10,6 +10,8 @@ const nextConfig: NextConfig = {
   },
   images: {
     remotePatterns: [
+      // fotot e ngarkuara në Supabase Storage
+      { protocol: "https", hostname: "*.supabase.co" },
       // fotot e ngarkuara në Vercel Blob
       { protocol: "https", hostname: "*.public.blob.vercel-storage.com" },
     ],

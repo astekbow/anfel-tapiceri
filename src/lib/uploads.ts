@@ -5,7 +5,15 @@ import sharp from "sharp";
 
 export const UPLOAD_DIR = path.resolve(process.cwd(), process.env.UPLOAD_DIR || "./uploads");
 
-/** Në Vercel (ose çdo host pa disk të përhershëm) fotot ruhen në Vercel Blob. */
+/**
+ * Ku ruhen fotot e reja, sipas konfigurimit:
+ * 1. Supabase Storage (SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY) - e nevojshme në Vercel
+ * 2. Vercel Blob (BLOB_READ_WRITE_TOKEN)
+ * 3. Disku lokal (zhvillim / VPS)
+ */
+const SUPABASE_URL = (process.env.SUPABASE_URL || "").replace(/\/$/, "");
+const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
+const SUPABASE_ENABLED = Boolean(SUPABASE_URL && SUPABASE_KEY);
 const BLOB_ENABLED = Boolean(process.env.BLOB_READ_WRITE_TOKEN);
 
 const ALLOWED_TYPES = new Set(["image/jpeg", "image/png", "image/webp", "image/avif", "image/gif"]);
@@ -20,9 +28,27 @@ export interface SavedUpload {
   thumbUrl: string;
 }
 
+async function supabasePut(name: string, buffer: Buffer): Promise<string> {
+  const res = await fetch(`${SUPABASE_URL}/storage/v1/object/uploads/${name}`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${SUPABASE_KEY}`,
+      apikey: SUPABASE_KEY,
+      "Content-Type": "image/webp",
+      "cache-control": "31536000",
+      "x-upsert": "true",
+    },
+    body: new Uint8Array(buffer),
+  });
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    throw new Error(`Supabase Storage ktheu ${res.status}: ${text.slice(0, 200)}`);
+  }
+  return `${SUPABASE_URL}/storage/v1/object/public/uploads/${name}`;
+}
+
 /**
  * Optimizon dhe ruan një imazh: max ~1920px, WebP, plus thumbnail.
- * Ruhet në disk lokal, ose në Vercel Blob kur ekziston BLOB_READ_WRITE_TOKEN.
  */
 export async function saveUpload(buffer: Buffer): Promise<SavedUpload> {
   const id = crypto.randomBytes(9).toString("hex");
@@ -40,6 +66,12 @@ export async function saveUpload(buffer: Buffer): Promise<SavedUpload> {
     .resize({ width: 600, height: 600, fit: "inside", withoutEnlargement: true })
     .webp({ quality: 74 })
     .toBuffer();
+
+  if (SUPABASE_ENABLED) {
+    const url = await supabasePut(mainName, mainBuffer);
+    const thumbUrl = await supabasePut(thumbName, thumbBuffer);
+    return { url, thumbUrl };
+  }
 
   if (BLOB_ENABLED) {
     const { put } = await import("@vercel/blob");
@@ -60,11 +92,27 @@ export async function saveUpload(buffer: Buffer): Promise<SavedUpload> {
   return { url: `/uploads/${mainName}`, thumbUrl: `/uploads/${thumbName}` };
 }
 
-/** Fshin nga disku ose nga Vercel Blob një foto të ngarkuar (best-effort, nuk hedh gabim). */
+/** Fshin një foto të ngarkuar nga vendi ku ruhet (best-effort, nuk hedh gabim). */
 export async function deleteUploadedFile(url: string | null | undefined): Promise<void> {
   if (!url) return;
 
-  // foto në Vercel Blob (URL absolute)
+  // foto në Supabase Storage
+  if (SUPABASE_ENABLED && url.startsWith(`${SUPABASE_URL}/storage/v1/object/public/uploads/`)) {
+    const name = url.split("/uploads/").pop();
+    if (!name) return;
+    const remove = (fileName: string) =>
+      fetch(`${SUPABASE_URL}/storage/v1/object/uploads/${fileName}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${SUPABASE_KEY}`, apikey: SUPABASE_KEY },
+      }).catch(() => undefined);
+    await remove(name);
+    if (!name.endsWith("-thumb.webp")) {
+      await remove(name.replace(/\.webp$/, "-thumb.webp"));
+    }
+    return;
+  }
+
+  // foto në Vercel Blob
   if (url.startsWith("https://") && url.includes("blob.vercel-storage.com")) {
     if (!BLOB_ENABLED) return;
     try {
@@ -74,7 +122,7 @@ export async function deleteUploadedFile(url: string | null | undefined): Promis
         await del(url.replace(/\.webp$/, "-thumb.webp")).catch(() => {});
       }
     } catch {
-      // injoro - fshirja është best-effort
+      /* injoro */
     }
     return;
   }
@@ -85,7 +133,7 @@ export async function deleteUploadedFile(url: string | null | undefined): Promis
   try {
     await fs.unlink(path.join(UPLOAD_DIR, name));
   } catch {
-    // skedari mund të mos ekzistojë - s'është problem
+    /* skedari mund të mos ekzistojë */
   }
   if (!name.endsWith("-thumb.webp")) {
     try {
