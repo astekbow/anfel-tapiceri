@@ -11,25 +11,15 @@ import type { PlainProduct } from "@/lib/types";
 import ImageUploader, { type UploadedImage } from "./ImageUploader";
 import ConfirmButton from "./ConfirmButton";
 
-const formSchema = z
-  .object({
-    title: z.string().trim().min(2, "Titulli duhet të ketë të paktën 2 shkronja").max(150),
-    categoryId: z.string().min(1, "Zgjidhni një kategori"),
-    description: z.string().trim().min(1, "Shkruani përshkrimin").max(10000),
-    priceMode: z.enum(["fixed", "onRequest"]),
-    price: z.string().optional(),
-    priceNote: z.string().trim().max(200).optional(),
-    dimensions: z.string().trim().max(300).optional(),
-    materials: z.string().trim().max(500).optional(),
-    featured: z.boolean(),
-    published: z.boolean(),
-  })
-  .refine(
-    (v) =>
-      v.priceMode === "onRequest" ||
-      (v.price != null && v.price.trim() !== "" && !isNaN(Number(v.price.replace(/\s/g, "").replace(",", ".")))),
-    { message: "Shkruani çmimin në Lekë (vetëm numra)", path: ["price"] }
-  );
+const formSchema = z.object({
+  title: z.string().trim().min(2, "Titulli duhet të ketë të paktën 2 shkronja").max(150),
+  categoryId: z.string().min(1, "Zgjidhni një kategori"),
+  description: z.string().trim().min(1, "Shkruani përshkrimin").max(10000),
+  dimensions: z.string().trim().max(300).optional(),
+  materials: z.string().trim().max(500).optional(),
+  featured: z.boolean(),
+  published: z.boolean(),
+});
 
 type FormValues = z.infer<typeof formSchema>;
 
@@ -52,7 +42,6 @@ export default function ProductForm({
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -60,9 +49,6 @@ export default function ProductForm({
       title: product?.title ?? "",
       categoryId: product?.categoryId ?? "",
       description: product?.description ?? "",
-      priceMode: product ? (product.price != null ? "fixed" : "onRequest") : "fixed",
-      price: product?.price != null ? String(product.price) : "",
-      priceNote: product?.priceNote ?? "",
       dimensions: product?.dimensions ?? "",
       materials: product?.materials ?? "",
       featured: product?.featured ?? false,
@@ -70,19 +56,14 @@ export default function ProductForm({
     },
   });
 
-  const priceMode = watch("priceMode");
-
   const onSubmit = async (values: FormValues) => {
     const result = await saveProduct({
       id: product?.id ?? null,
       title: values.title,
       categoryId: values.categoryId,
       description: values.description,
-      price:
-        values.priceMode === "fixed"
-          ? Number(values.price!.replace(/\s/g, "").replace(",", "."))
-          : null,
-      priceNote: values.priceNote?.trim() || null,
+      price: null,
+      priceNote: null,
       dimensions: values.dimensions?.trim() || null,
       materials: values.materials?.trim() || null,
       featured: values.featured,
@@ -182,54 +163,6 @@ export default function ProductForm({
             {errors.description && (
               <p className="mt-1 text-sm text-red-700">{errors.description.message}</p>
             )}
-          </div>
-        </div>
-      </div>
-
-      <div className="rounded-2xl border border-seam bg-ivory p-5 sm:p-6">
-        <h2 className="font-display text-xl text-walnut">Çmimi</h2>
-
-        <div className="mt-4 flex flex-wrap gap-4">
-          <label className="flex cursor-pointer items-center gap-2 text-[15px]">
-            <input type="radio" value="fixed" className="accent-pine" {...register("priceMode")} />
-            Çmim fiks
-          </label>
-          <label className="flex cursor-pointer items-center gap-2 text-[15px]">
-            <input type="radio" value="onRequest" className="accent-pine" {...register("priceMode")} />
-            Çmim me kërkesë
-          </label>
-        </div>
-
-        <div className="mt-4 grid gap-4 sm:grid-cols-2">
-          {priceMode === "fixed" && (
-            <div>
-              <label htmlFor="price" className={labelClass}>
-                Çmimi (Lekë)
-              </label>
-              <input
-                id="price"
-                type="text"
-                inputMode="numeric"
-                placeholder="p.sh. 45000"
-                className={inputClass}
-                {...register("price")}
-              />
-              {errors.price && <p className="mt-1 text-sm text-red-700">{errors.price.message}</p>}
-            </div>
-          )}
-          <div>
-            <label htmlFor="priceNote" className={labelClass}>
-              {priceMode === "fixed" ? "Shënim çmimi (opsionale)" : "Teksti që shfaqet"}
-            </label>
-            <input
-              id="priceNote"
-              type="text"
-              placeholder={
-                priceMode === "fixed" ? "p.sh. çmimi për copë" : "p.sh. Çmimi sipas porosisë"
-              }
-              className={inputClass}
-              {...register("priceNote")}
-            />
           </div>
         </div>
       </div>
